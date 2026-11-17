@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bluetooth Clipping Preventer</title>
+    <style>
+        :root {
+            --bg-color: #f4f6f9;
+            --card-bg: #ffffff;
+            --text-main: #333333;
+            --text-muted: #666666;
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --success: #10b981;
+            --danger: #ef4444;
+            --border: #e5e7eb;
+            --console-bg: #1e293b;
+            --console-text: #f8fafc;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 1rem;
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            width: 100%;
+            max-width: 480px;
+        }
+
+        h2 {
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            font-size: 1.25rem;
+            color: var(--text-main);
+        }
+
+        /* 1. Status Display */
+        .status-panel {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+
+        .status-label {
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .status-value {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+        }
+
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            background-color: var(--success);
+            border-radius: 50%;
+        }
+
+        .status-indicator.updating {
+            background-color: var(--primary);
+            animation: pulse 1s infinite;
+        }
+
+        /* 2. Slider Component */
+        .slider-panel {
+            margin-bottom: 1.5rem;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .target-val {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .slider-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .limit-label {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            width: 30px;
+        }
+
+        .range-slider {
+            flex-grow: 1;
+            height: 6px;
+            background: var(--border);
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+
+        .range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--primary);
+            transition: background 0.15s ease-in-out;
+        }
+
+        .range-slider::-webkit-slider-thumb:hover {
+            background: var(--primary-hover);
+        }
+
+        /* 3. Action Button */
+        .action-panel {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-submit {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-submit:hover:not(:disabled) {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* 4. Execution Result Panel */
+        .result-panel {
+            border-top: 1px solid var(--border);
+            padding-top: 1rem;
+        }
+
+        .result-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .result-badge {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+            display: none;
+        }
+
+        .result-badge.success {
+            display: inline-block;
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .result-badge.error {
+            display: inline-block;
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        .result-console {
+            background-color: var(--console-bg);
+            color: var(--console-text);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 0.825rem;
+            padding: 0.75rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            margin: 0;
+            min-height: 40px;
+        }
+
+        .placeholder-text {
+            color: #94a3b8;
+            font-style: italic;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>External Audio Device Configuration</h2>
+
+    <!-- 1. Current Status Display -->
+    <div class="status-panel">
+        <span class="status-label">Input Gain</span>
+        <div class="status-value">
+            <div class="status-indicator" id="statusIndicator"></div>
+            <span class="target-val"><span id="currentLimitText">-6.0</span> db(FS)</span>
+        </div>
+    </div>
+
+    <!-- 2. Slider Component -->
+    <div class="slider-panel">
+        <div class="slider-label">
+            <span>New Input Gain</span>
+            <span class="target-val"><span id="targetValueDisplay">-6.0</span> db(FS)</span>
+        </div>
+        <div class="slider-wrapper">
+            <span class="limit-label" style="text-align: right;">-12.0</span>
+            <input type="range" id="limitSlider" class="range-slider" min="-12.0" max="0" step="0.2" value="-6.0">
+            <span class="limit-label">0</span>
+        </div>
+    </div>
+
+    <!-- 3. Action Button -->
+    <div class="action-panel">
+        <button type="button" id="applyButton" class="btn-submit" disabled>
+            Apply Changes
+        </button>
+    </div>
+
+    <!-- 4. Execution Result Component -->
+    <div class="result-panel">
+        <div class="result-title">Execution Result</div>
+        <div id="resultBadge" class="result-badge"></div>
+        <pre id="resultConsole" class="result-console"><span class="placeholder-text">No execution history. Adjust slider and click "Apply".</span></pre>
+    </div>
+</div>
+
+<script src="./script.js" defer></script>
+
+</body>
+</html>

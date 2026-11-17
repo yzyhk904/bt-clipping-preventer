@@ -1,0 +1,5 @@
+{
+    "permissions": [
+        "kernelsu.permission.SHELL"
+    ]
+}
