@@ -4,14 +4,14 @@
 targetFile="/vendor/etc/audio_policy_volumes.xml"
 
 # Set "inputGain" (input gain of BT codecs when the absolume volume of bluetooth is used); 
-#   typically -320mB ~ -600mB (i.e., -3.2dB ~ -6.0dB) for LDAC and -320mB (-3.2dB) for AAC not to saturate in decodeing process (DRC, band merging, etc.),
-#   must be geater than or equal to -1700mB(-17dB)
-inputGain="-580"
+#   typically -320mB ~ -700mB (i.e., -3.2dB ~ -7.0dB) for LDAC and -320mB (-3.2dB) for AAC not to saturate in decodeing process (DRC, band merging, etc.),
+#   must be geater than or equal to -4000mB(-40dB)
+inputGain="-650"
 
 #
 
-if [ "$inputGain" -lt -1700 ]; then
-    abort "Input gain of BT codecs must be greater than or equal to -17dB"
+if [ "$inputGain" -lt -4000 ]; then
+    abort "Input gain of BT codecs must be greater than or equal to -4000mB(-40dB)"
 fi
 generatedFile="$MODPATH/system$targetFile"
 

@@ -93,6 +93,37 @@
             margin-bottom: 0.5rem;
         }
 
+         /* Radio buttons (Segmented control style) */
+          .radio-group {
+            display: flex;
+            gap: 7px;
+            margin-bottom: 20px;
+            margin-top: 20pt;
+            background-color: #6280d414;
+          }
+
+          .radio-group input[type="radio"] {
+            display: none;
+          }
+
+          .radio-group label {
+            flex: 1;
+            text-align: center;
+            padding: 0.1px 0;
+            background-color: #358c8624;
+            border: 3px solid #358c8624;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+          }
+
+          .radio-group input[type="radio"]:checked + label {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+            color: #ef444496;
+          }
+
         .target-val {
             color: var(--primary);
             font-weight: 700;
@@ -231,7 +262,7 @@
         <span class="status-label">Input Gain</span>
         <div class="status-value">
             <div class="status-indicator" id="statusIndicator"></div>
-            <span class="target-val"><span id="currentLimitText">-6.0</span> db(FS)</span>
+            <span class="target-val"><span id="currentLimitText">-6.5</span> db(FS)</span>
         </div>
     </div>
 
@@ -239,12 +270,27 @@
     <div class="slider-panel">
         <div class="slider-label">
             <span>New Input Gain</span>
-            <span class="target-val"><span id="targetValueDisplay">-6.0</span> db(FS)</span>
+            <span class="target-val"><span id="targetValueDisplay">-6.5</span> db(FS)</span>
+        </div>
+        <!-- Base Offset Radio Buttons -->
+        <div class="radio-group">
+            <span class="radio-label" style="text-align: left;">Offset:   </span>
+            <input type="radio" id="offset-0" name="baseOffset" value="0" checked>
+            <label for="offset-0">-0 dB</label>
+
+            <input type="radio" id="offset-10" name="baseOffset" value="-10">
+            <label for="offset-10">-10 dB</label>
+
+            <input type="radio" id="offset-20" name="baseOffset" value="-20">
+            <label for="offset-20">-20 dB</label>
+
+            <input type="radio" id="offset-30" name="baseOffset" value="-30">
+            <label for="offset-30">-30 dB</label>
         </div>
         <div class="slider-wrapper">
-            <span class="limit-label" style="text-align: right;">-12.0</span>
-            <input type="range" id="limitSlider" class="range-slider" min="-12.0" max="0" step="0.2" value="-6.0">
-            <span class="limit-label">0</span>
+            <span class="limit-label" style="text-align: right;">-10dB</span>
+            <input type="range" id="limitSlider" class="range-slider" min="-10.0" max="0" step="0.1" value="0">
+            <span class="limit-label">0dB</span>
         </div>
     </div>
 

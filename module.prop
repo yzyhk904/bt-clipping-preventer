@@ -1,6 +1,6 @@
 id=bt-clipping-preventer
 name=BT clipping preventer
-version=v1.0.3
-versionCode=1003
+version=v1.0.4
+versionCode=1004
 author=zyhk
-description=This module prevents clipping and saturation around 0dB peaks when using bluetooth audio devices.
+description=This module prevents clipping and saturation around 0dB peaks, and mid-range volume distortion hump when using bluetooth audio devices.

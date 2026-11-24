@@ -14,8 +14,8 @@ if [ -e "/data/adb/magisk/magisk" ]; then
 fi
 
 # "inputGain" must be specified in mB (1/100 dB)
-# default value: -580 (-580mB = -5.8dB)
-inputGain="-580"
+# default value: -650 (-650mB = -6.5dB)
+inputGain="-650"
 if [ $# -gt 0 ];then
     inputGain="`echo \"scale=0; ( $1 * 100 ) / 1\" | bc`"
 fi

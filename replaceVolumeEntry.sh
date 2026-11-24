@@ -1,19 +1,19 @@
 #!/system/bin/sh
 
 # "<point>100,$outputGain</point>" commans AudioFlinger to send audio data to bluetooth audio codec encoders
-# at "$outputGain" mB (typically -320mB ~ -600mB for LDAC, and -320mB for AAC; note 100mB=1dB) output gain
+# at "$outputGain" mB (typically -320mB ~ -700mB for LDAC, and -320mB for AAC; note 100mB=1dB) output gain
 # in the bit depth of an audio route to them (e.g., 32 bit for LDAC, 24 bit for aptX HD, 16 bit for AAC)
 # when the absolute volume of bluetooth is enabled
 
 if [ "$#" -gt 0 ];then
-    if [ "$1" -le 0  -a  "$1" -ge -1700 ]; then
+    if [ "$1" -le 0  -a  "$1" -ge -4000 ]; then
         outputGain="$1"
     else
-        echo "Wrong argument: $1; out of [-1700 ~ 0]" 1>&2
+        echo "Wrong argument: $1; out of [-4000 ~ 0]" 1>&2
         exit 1
     fi
 else
-    outputGain="-580"
+    outputGain="-650"
 fi
 
 replaceText=\
@@ -21,7 +21,6 @@ replaceText=\
     <!-- Modified Default Media Reference Volume Curve for bluetooth devices not to clip or distort around 0dB peaks -->
         <point>1,-5800</point>
         <point>20,-4000</point>
-        <point>60,-1700</point>
         <point>100,$outputGain</point>
     </volume>
 "
